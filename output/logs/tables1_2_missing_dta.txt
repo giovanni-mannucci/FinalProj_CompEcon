@@ -1,0 +1,6 @@
+tables1_2 cannot be produced from the `.dta` route yet.
+
+Missing input files:
+/Users/Gio/Desktop/CompEcon/FinalProj_CompEcon/replication-package/Codes_CubasJuhnSilos/EJ_replicate/document_data_new/document_dta/5_data_#5.dta
+
+After you produce these files from Stata, rerun the Julia command.

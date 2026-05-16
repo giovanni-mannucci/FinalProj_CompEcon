@@ -1,0 +1,15 @@
+Counterfactual 5.3.2 Julia port
+
+This ports the quantitative model in:
+replication-package/Codes_CubasJuhnSilos/EJ_replicate_model/Quantitative_Analysis/model_files/main_ge.R
+
+Implemented experiment:
+experiment == 1, Same alpha as healthcare support.
+
+Data availability note:
+The replication package in this repository does not include the
+Quantitative_Analysis/data/*.txt files used by main_ge.R. The Julia port
+uses estimated parameters from model_files/ces_param and parses the labor
+shares from latex_tables/table8.tex. This is enough to solve the baseline
+and counterfactual equilibria, but it does not recompute the original model
+fit statistic against all calibration moments.

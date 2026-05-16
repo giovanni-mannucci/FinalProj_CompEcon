@@ -1,0 +1,209 @@
+
+  ___  ____  ____  ____  ____ ®
+ /__    /   ____/   /   ____/      17.0
+___/   /   /___/   /   /___/       BE—Basic Edition
+
+ Statistics and Data Science       Copyright 1985-2021 StataCorp LLC
+                                   StataCorp
+                                   4905 Lakeway Drive
+                                   College Station, Texas 77845 USA
+                                   800-STATA-PC        https://www.stata.com
+                                   979-696-4600        stata@stata.com
+
+Stata license: Unlimited-user , expiring  4 Aug 2023
+Serial number: 501709301055
+  Licensed to: Pedro Silos
+               Temple University
+
+Notes:
+      1. Stata is running in batch mode.
+      2. Unicode is supported; see help unicode_advice.
+
+. do "./do_10.do" 
+
+. * Directly download the 10 ONET characteristics from the ONET website and the
+> n 
+. * merge into dataset 
+. clear
+
+. 
+. forval i=1/10{
+  2. import delimited "./`i'.txt", delimiters(tab) varnames(1) asdouble
+  3. destring soc,replace
+  4. destring onet_ch_`i',replace 
+  5. save "./`i'.dta",replace
+  6. clear
+  7. }
+(encoding automatically selected: ISO-8859-1)
+(2 vars, 964 obs)
+soc already numeric; no replace
+onet_ch_1 already numeric; no replace
+(file ./1.dta not found)
+file ./1.dta saved
+(encoding automatically selected: ISO-8859-1)
+(2 vars, 964 obs)
+soc already numeric; no replace
+onet_ch_2 already numeric; no replace
+(file ./2.dta not found)
+file ./2.dta saved
+(encoding automatically selected: ISO-8859-1)
+(2 vars, 964 obs)
+soc already numeric; no replace
+onet_ch_3 already numeric; no replace
+(file ./3.dta not found)
+file ./3.dta saved
+(encoding automatically selected: ISO-8859-1)
+(2 vars, 964 obs)
+soc already numeric; no replace
+onet_ch_4 already numeric; no replace
+(file ./4.dta not found)
+file ./4.dta saved
+(encoding automatically selected: ISO-8859-1)
+(2 vars, 964 obs)
+soc already numeric; no replace
+onet_ch_5 already numeric; no replace
+(file ./5.dta not found)
+file ./5.dta saved
+(encoding automatically selected: ISO-8859-1)
+(2 vars, 964 obs)
+soc already numeric; no replace
+onet_ch_6 already numeric; no replace
+(file ./6.dta not found)
+file ./6.dta saved
+(encoding automatically selected: ISO-8859-1)
+(2 vars, 964 obs)
+soc already numeric; no replace
+onet_ch_7 already numeric; no replace
+(file ./7.dta not found)
+file ./7.dta saved
+(encoding automatically selected: ISO-8859-1)
+(2 vars, 964 obs)
+soc already numeric; no replace
+onet_ch_8 already numeric; no replace
+(file ./8.dta not found)
+file ./8.dta saved
+(encoding automatically selected: ISO-8859-1)
+(2 vars, 964 obs)
+soc already numeric; no replace
+onet_ch_9 already numeric; no replace
+(file ./9.dta not found)
+file ./9.dta saved
+(encoding automatically selected: ISO-8859-1)
+(2 vars, 964 obs)
+soc already numeric; no replace
+onet_ch_10 already numeric; no replace
+(file ./10.dta not found)
+file ./10.dta saved
+
+. 
+. 
+. 
+. 
+. ** merge all characteristics by soc. 
+. use "./1.dta"
+
+. forval i=2/10{
+  2. 
+. merge 1:1 soc using "./`i'.dta"
+  3. drop _merge 
+  4. 
+. }
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                             0
+    Matched                               964  (_merge==3)
+    -----------------------------------------
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                             0
+    Matched                               964  (_merge==3)
+    -----------------------------------------
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                             0
+    Matched                               964  (_merge==3)
+    -----------------------------------------
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                             0
+    Matched                               964  (_merge==3)
+    -----------------------------------------
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                             0
+    Matched                               964  (_merge==3)
+    -----------------------------------------
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                             2
+        from master                         1  (_merge==1)
+        from using                          1  (_merge==2)
+
+    Matched                               963  (_merge==3)
+    -----------------------------------------
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                             1
+        from master                         1  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                               964  (_merge==3)
+    -----------------------------------------
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                             1
+        from master                         1  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                               964  (_merge==3)
+    -----------------------------------------
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                             1
+        from master                         1  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                               964  (_merge==3)
+    -----------------------------------------
+
+. 
+. drop onet_ch_8 onet_ch_10
+
+. rename onet_ch_1 onet_ch_27
+
+. rename onet_ch_2 onet_ch_28
+
+. rename onet_ch_3 onet_ch_29
+
+. rename onet_ch_4 onet_ch_30
+
+. rename onet_ch_7 onet_ch_31
+
+. rename onet_ch_9 onet_ch_32
+
+. rename onet_ch_6 onet_ch_33
+
+. rename onet_ch_5 onet_ch_34
+
+. 
+. 
+. save "../../../Stata_Raw_Data/onet_merged_char_10.dta",replace 
+(file ../../../Stata_Raw_Data/onet_merged_char_10.dta not found)
+file ../../../Stata_Raw_Data/onet_merged_char_10.dta saved
+
+. 
+. forval i=1/10{
+  2. erase "./`i'.dta"
+  3. }
+
+. 
+end of do-file

@@ -1,0 +1,251 @@
+
+  ___  ____  ____  ____  ____ ®
+ /__    /   ____/   /   ____/      17.0
+___/   /   /___/   /   /___/       BE—Basic Edition
+
+ Statistics and Data Science       Copyright 1985-2021 StataCorp LLC
+                                   StataCorp
+                                   4905 Lakeway Drive
+                                   College Station, Texas 77845 USA
+                                   800-STATA-PC        https://www.stata.com
+                                   979-696-4600        stata@stata.com
+
+Stata license: Unlimited-user , expiring  4 Aug 2023
+Serial number: 501709301055
+  Licensed to: Pedro Silos
+               Temple University
+
+Notes:
+      1. Stata is running in batch mode.
+      2. Unicode is supported; see help unicode_advice.
+
+. do "./do_additional_onet.do" 
+
+. * Directly download the 10 ONET characteristics from the ONET website and the
+> n 
+. * merge into dataset 
+. clear
+
+. forval i=6/21{
+  2. import delimited "./`i'.txt", delimiters(tab) varnames(1) asdouble
+  3. destring soc,replace
+  4. destring onet_ch_`i',replace 
+  5. save "./`i'.dta", replace
+  6. clear
+  7. }
+(encoding automatically selected: ISO-8859-1)
+(2 vars, 968 obs)
+soc already numeric; no replace
+onet_ch_6 already numeric; no replace
+(file ./6.dta not found)
+file ./6.dta saved
+(encoding automatically selected: ISO-8859-1)
+(2 vars, 968 obs)
+soc already numeric; no replace
+onet_ch_7 already numeric; no replace
+(file ./7.dta not found)
+file ./7.dta saved
+(encoding automatically selected: ISO-8859-1)
+(2 vars, 968 obs)
+soc already numeric; no replace
+onet_ch_8 already numeric; no replace
+(file ./8.dta not found)
+file ./8.dta saved
+(encoding automatically selected: ISO-8859-1)
+(2 vars, 968 obs)
+soc already numeric; no replace
+onet_ch_9 already numeric; no replace
+(file ./9.dta not found)
+file ./9.dta saved
+(encoding automatically selected: ISO-8859-1)
+(2 vars, 968 obs)
+soc already numeric; no replace
+onet_ch_10 already numeric; no replace
+(file ./10.dta not found)
+file ./10.dta saved
+(encoding automatically selected: ISO-8859-1)
+(2 vars, 968 obs)
+soc already numeric; no replace
+onet_ch_11 already numeric; no replace
+(file ./11.dta not found)
+file ./11.dta saved
+(encoding automatically selected: ISO-8859-1)
+(2 vars, 968 obs)
+soc already numeric; no replace
+onet_ch_12 already numeric; no replace
+(file ./12.dta not found)
+file ./12.dta saved
+(encoding automatically selected: ISO-8859-1)
+(2 vars, 968 obs)
+soc already numeric; no replace
+onet_ch_13 already numeric; no replace
+(file ./13.dta not found)
+file ./13.dta saved
+(encoding automatically selected: ISO-8859-1)
+(2 vars, 968 obs)
+soc already numeric; no replace
+onet_ch_14 already numeric; no replace
+(file ./14.dta not found)
+file ./14.dta saved
+(encoding automatically selected: ISO-8859-1)
+(2 vars, 968 obs)
+soc already numeric; no replace
+onet_ch_15 already numeric; no replace
+(file ./15.dta not found)
+file ./15.dta saved
+(encoding automatically selected: ISO-8859-1)
+(2 vars, 968 obs)
+soc already numeric; no replace
+onet_ch_16 already numeric; no replace
+(file ./16.dta not found)
+file ./16.dta saved
+(encoding automatically selected: ISO-8859-1)
+(2 vars, 968 obs)
+soc already numeric; no replace
+onet_ch_17 already numeric; no replace
+(file ./17.dta not found)
+file ./17.dta saved
+(encoding automatically selected: ISO-8859-1)
+(2 vars, 968 obs)
+soc already numeric; no replace
+onet_ch_18 already numeric; no replace
+(file ./18.dta not found)
+file ./18.dta saved
+(encoding automatically selected: ISO-8859-1)
+(2 vars, 968 obs)
+soc already numeric; no replace
+onet_ch_19 already numeric; no replace
+(file ./19.dta not found)
+file ./19.dta saved
+(encoding automatically selected: ISO-8859-1)
+(2 vars, 968 obs)
+soc already numeric; no replace
+onet_ch_20 already numeric; no replace
+(file ./20.dta not found)
+file ./20.dta saved
+(encoding automatically selected: ISO-8859-1)
+(2 vars, 968 obs)
+soc already numeric; no replace
+onet_ch_21 already numeric; no replace
+(file ./21.dta not found)
+file ./21.dta saved
+
+. 
+. 
+. 
+. 
+. ** merge all characteristics by soc. 
+. use "./6.dta"
+
+. forval i=7/21{
+  2. merge 1:1 soc using "./`i'.dta"
+  3. drop _merge 
+  4. 
+. }
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                             0
+    Matched                               968  (_merge==3)
+    -----------------------------------------
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                             0
+    Matched                               968  (_merge==3)
+    -----------------------------------------
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                             0
+    Matched                               968  (_merge==3)
+    -----------------------------------------
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                             0
+    Matched                               968  (_merge==3)
+    -----------------------------------------
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                             0
+    Matched                               968  (_merge==3)
+    -----------------------------------------
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                             0
+    Matched                               968  (_merge==3)
+    -----------------------------------------
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                             0
+    Matched                               968  (_merge==3)
+    -----------------------------------------
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                             0
+    Matched                               968  (_merge==3)
+    -----------------------------------------
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                             0
+    Matched                               968  (_merge==3)
+    -----------------------------------------
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                             0
+    Matched                               968  (_merge==3)
+    -----------------------------------------
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                             0
+    Matched                               968  (_merge==3)
+    -----------------------------------------
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                             0
+    Matched                               968  (_merge==3)
+    -----------------------------------------
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                             0
+    Matched                               968  (_merge==3)
+    -----------------------------------------
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                             0
+    Matched                               968  (_merge==3)
+    -----------------------------------------
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                             0
+    Matched                               968  (_merge==3)
+    -----------------------------------------
+
+. 
+.  
+. 
+. 
+. save "../../../Stata_Raw_Data/onet_merged_char_additional.dta",replace 
+(file ../../../Stata_Raw_Data/onet_merged_char_additional.dta not found)
+file ../../../Stata_Raw_Data/onet_merged_char_additional.dta saved
+
+. 
+. 
+. forval i=6/21{
+  2. erase "./`i'.dta"
+  3. }
+
+. 
+end of do-file

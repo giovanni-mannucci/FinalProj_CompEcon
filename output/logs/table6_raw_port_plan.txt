@@ -1,0 +1,10 @@
+Raw Julia route for Table 6.
+
+Table 6 builds on `6_b_reg.dta`, `ONET_563b.dta`, and `bratio_563all.dta`.
+The Julia final-regression code is implemented in `run_table6_from_dta()`.
+The remaining raw-port work is to port:
+- document_dta/6_regression data/6_a.do
+- 6.2_ratios/ratios_94_563_22.do
+- 6.4_avgeduc/6.4_avg_educ.do
+- 6.5_male_overwork/6.5_male_overwork.do
+- table6-7/regs_ONET_563.do

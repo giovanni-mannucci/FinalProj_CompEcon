@@ -165,3 +165,16 @@ TEMPLATE_files/
 /.quarto/
 
 **/*.quarto_ipynb
+
+# Project-specific overrides for this replication
+# Keep the Julia package and generated outputs under version control.
+!CubasJuhnSilos/
+!CubasJuhnSilos/**
+!output/
+!output/**
+!report.qmd
+!report.html
+!README.md
+
+# Keep the Figure 2 spreadsheet checkpoint used by the Julia code.
+!replication-package/Codes_CubasJuhnSilos/EJ_replicate/fig1-4/fig2_3.xlsx

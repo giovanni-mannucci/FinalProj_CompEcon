@@ -1,0 +1,3 @@
+scenario,alpha_rule,aggregate_gender_gap_percent,decomp_total_log,decomp_across_log,decomp_within_log,wage_iterations,wage_final_diff
+baseline,estimated occupation-specific alpha,9.626361997222176,0.09190768877505526,0.019348854525359796,0.07255883424969566,96,4.3003579015144135e-5
+same_alpha_healthcare_support,all alpha set to occupation 11 alpha,6.464108465025364,0.06263773264277958,0.042360386644284695,0.02027734599849489,47,4.7242777402017095e-5

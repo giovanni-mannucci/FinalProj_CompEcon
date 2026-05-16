@@ -1,0 +1,28 @@
+{
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\begin{tabular}{l*{4}{c}}
+\hline\hline
+                    &\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}&\multicolumn{1}{c}{(3)}&\multicolumn{1}{c}{(4)}\\
+                    &\multicolumn{1}{c}{baseline }&\multicolumn{1}{c}{baseline+agg educ}&\multicolumn{1}{c}{baseline+agg educ+ overwrk}&\multicolumn{1}{c}{est4}\\
+\hline
+Standardized values of bratio\_work563&       0.146\sym{***}&       0.108\sym{***}&       0.109\sym{***}&       0.104\sym{***}\\
+                    &    (0.0233)         &    (0.0185)         &    (0.0189)         &    (0.0173)         \\
+[1em]
+Wife PT             &      0.0128         &     0.00653         &     0.00684         &     0.00473         \\
+                    &   (0.00857)         &   (0.00817)         &   (0.00823)         &   (0.00822)         \\
+[1em]
+Wife FT             &     -0.0465\sym{***}&     -0.0521\sym{***}&     -0.0509\sym{***}&     -0.0504\sym{***}\\
+                    &   (0.00881)         &   (0.00879)         &   (0.00827)         &   (0.00825)         \\
+[1em]
+Wife PT X ratio8to5 &     -0.0296\sym{**} &     -0.0356\sym{**} &     -0.0357\sym{**} &     -0.0263\sym{**} \\
+                    &    (0.0117)         &    (0.0110)         &    (0.0111)         &    (0.0110)         \\
+[1em]
+Wife FT X ratio8to5 &     -0.0550\sym{***}&     -0.0561\sym{***}&     -0.0572\sym{***}&     -0.0483\sym{***}\\
+                    &    (0.0113)         &    (0.0113)         &    (0.0112)         &    (0.0110)         \\
+\hline
+Observations        &       68281         &       68281         &       68267         &       66646         \\
+\hline\hline
+\multicolumn{5}{l}{\footnotesize Standard errors in parentheses}\\
+\multicolumn{5}{l}{\footnotesize \sym{*} \(p<.10\), \sym{**} \(p<.05\), \sym{***} \(p<.001\)}\\
+\end{tabular}
+}

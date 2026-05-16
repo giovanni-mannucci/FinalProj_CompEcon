@@ -1,17 +1,18 @@
 ---
 title: "CCA `CompEcon` Replication Project"
-subtitle: "Replication of xxxx by i,j and k (AER, 2024)"
-author: 
-  - name: Student 1
+subtitle: "Replication of Coordinated Work Schedules and the Gender Wage Gap, by G. Cubas, C. Juhn and P. Silos (EJ, 2023)"
+author:
+  - name: Giovanni Mannucci
     orcid: 0000-0000-0000-0000
-    email: your.email@com
+    email: giovanni.mannucci@carloalberto.com
     affiliations: Uni Turin, Collegio Carlo Alberto
-  - name: Student 2
-    orcid: 0000-0000-0000-0000
-    email: your.email@com
-    affiliations: Uni Turin, Collegio Carlo Alberto
+format:
+  html:
+    toc: true
+    number-sections: true
+execute:
+  echo: false
 ---
-
 
 ::: {.callout-note}
 
@@ -21,97 +22,187 @@ This report was created as part of the assessment for the [`Computational Econom
 
 :::
 
-> {REPLICATOR} Every line which looks like this one, that is, it starts with {REPLICATOR} and has this formatting (there is a grey bar on the left 👀), is an **instruction for you, the replicator**. When you are done with editing this file, _there should be no such line left_ - you should delete all of them.
-
 ## Paper and Replication Package
 
-This report attempts a replication of 
+This report attempts a partial replication of Cubas, Juhn and Silos, "Coordinated Work Schedules and the Gender Wage Gap", using the `julia` computation language.
 
-* paper: DOI of published paper
-* replication package: DOI of package
+- Paper: <https://doi.org/10.1093/ej/ueac086>
+- Replication package: <https://doi.org/10.5281/zenodo.7336171>
+- Original software in the package: Stata and R
+- Replication software used here: Julia
 
-by using the `julia` computation language.
+The replication targets are:
 
-We have been able to replicate the following exhibits:
+1. Table 1, Table 2 and Figure 2, the main descriptive exhibits.
+2. Table 6, the main empirical wage-regression table.
+3. Table 5, the simple model results.
+4. Counterfactual 5.3.2, the quantitative-model counterfactual in which occupational coordination is set to the healthcare-support value.
 
-1. figure one
-2. figure two
-3. table three
+At the current stage, Figure 2, Table 5 and the quantitative counterfactual are implemented and run in Julia. The final Julia code for Tables 1, 2 and 6 from Stata `.dta` checkpoints is also implemented, but the required `.dta` intermediate files are not included in the downloaded replication package and still need to be generated.
 
-> {REPLICATOR}: leave comments here for partial results, caveats, and other observations
+## High Level Description of Computational Problem
 
+The paper studies how coordinated work schedules affect the gender wage gap. The empirical part constructs time-use measures of work concentration during regular hours, especially an occupation-level `8-to-5` ratio, and relates those measures to gender gaps in work, household care, and wages. The main empirical tasks are therefore data construction from ATUS/CPS/ACS/O*NET sources and weighted regressions with demographic controls and occupation-level coordination measures.
 
-## High Level Description of Computational Problem in Paper
+The model part solves workers' time-allocation decisions across prime and non-prime hours. Workers choose labor in two time blocks, $l_1$ and $l_2$, while household care uses the remaining time. Effective labor in an occupation depends on total labor and a coordination penalty:
 
-> {REPLICATOR}: please write here a concise summary describing the main computational tasks in this paper, i.e. which equations to solve, which to estimate, which methodology, any implementation details visible from the replication package (algorithms, packages, procedures used)
->
-> You can use standard $\LaTeX$ expression, $x+y$, also display mode of course 
-> $$\begin{align}
-> x +y & = z\\
-> z &= 0
-> \end{align}$$
+$$
+\ell^* = l_1 + l_2 - (0.5 - l_1)^\alpha .
+$$
 
+The worker utility problem has the form
+
+$$
+U = c^\theta h^{1-\theta},
+\qquad
+h = \left(h_1^\xi + h_2^\xi\right)^{1/\xi},
+$$
+
+where $c = w \ell^*$, $h_1 = 0.5 - l_1$, and $h_2 = 0.5 - l_2$. The Julia code solves these nonlinear choice problems using numerical optimization, then iterates on wages until the general-equilibrium labor-market clearing conditions are satisfied.
+
+The simple model behind Table 5 is a two-occupation version of this problem. The quantitative counterfactual uses the estimated parameters from `ces_param`, solves the baseline equilibrium, then sets every occupation's coordination parameter $\alpha$ equal to the healthcare-support occupation's value.
 
 ## Computational Requirements
 
-Here are the original package's computational requirements:
+The original replication package does not provide a single complete machine-readable requirements file. Inspection of the package shows that the original empirical exhibits rely on Stata scripts and the model results rely on R scripts.
 
-- [ ] No requirements specified
-- [ ] Software Requirements specified as follows:
-  - Software 1, version ...
-  - Software 2, version ...
-- [ ] Computational Requirements specified as follows:
-  - Cluster size, etc.
-- [ ] Time Requirements specified as follows:
-  - Length of necessary computation (hours, weeks, etc.)
+For this Julia replication, the main package dependencies are:
 
+- `DataFrames.jl` and `CSV.jl` for data handling.
+- `XLSX.jl` for the Figure 2 checkpoint file.
+- `Optim.jl` and `NLsolve.jl` for nonlinear optimization and equation solving.
+- `Plots.jl` for Figure 2.
+- `StatFiles.jl` for the planned `.dta` checkpoint route.
 
-## Our Computational setup
+The generated Julia package exposes one main entry point:
 
-> {REPLICATOR}: please fill in manually. Remove examples that are not relevant, adjust examples to fit special circumstances. Some of this is available from the standard log output in Stata or R. Some frequently used details are below. Some of these details can be found as follows:
->
-> - (Windows) by right-clicking on "This PC"
-> - (Mac) Apple-menu > "About this Mac"
-> - (Linux) see code in `tools/linux-system-info.sh`
->
-> Some options are listed below. Choose the one that applies and delete everything else.
+```julia
+using Pkg
+Pkg.activate("CubasJuhnSilos")
+using CubasJuhnSilos
+CubasJuhnSilos.run_all()
+```
 
-- Mac Laptop M2 MacBook Pro, MacOS 10.14.6, 8 GB of memory, (M2 Processor, 8 cores)
-- RedCloud Servers: Intel Xeon Processor (Skylake) 3.09 GHz (18 processors), Installed Ram 176 GB, 64-bit operating system, x64-based processor
-- CCSS Cloud: Windows Server AMD EPYC 7763 64-Core Processor 2.44 GHz, 128GB
-- BioHPC Linux server, Rocky Linux 9.0, AMD Opteron Processor 6380 / 16 cores/ 125 GB memory (adjust as necessary from output of linux-system-info.sh)
-- WholeTale (describe the environment chosen)
-- CodeOcean (describe the type of capsule chosen) Intel(R) Xeon(R) Platinum 8259CL CPU @ 2.50GHz (16 cores), 128 GB Memory
-- Bitbucket Pipelines, "Ubuntu 20.04.2 LTS", Intel(R) Xeon(R) Platinum 8259CL CPU @ 2.50GHz, 8 cores, 9GB memory
-- Codespaces, "Ubuntu 20.04.2 LTS", Intel(R) Xeon(R) Platinum 8272CL CPU @ 2.60GHz, 2 core, 8GB/ 4-core, 16GB/ 8-core, 32 GB/ 16-core, 64GB (choose appropriately)
+Unit tests can be run with:
 
+```bash
+julia --project=CubasJuhnSilos -e 'using Pkg; Pkg.test()'
+```
 
-> {REPLICATOR}: Please also list the software you used (specific versions). List only the ones you used, add any not listed in the examples:
+## Computational Setup
 
-- Stata/MP 18.0
-- Matlab R2022a
-- Intel Compiler 3.14152 (note: there is no such thing, so please verify the version!)
+The replication was run locally with the following setup:
 
+- Operating system: macOS 26.4.1.
+- CPU: Apple M1.
+- Cores: 8.
+- Memory: 8 GB.
+- Julia: 1.12.4.
+- Quarto: 1.9.37.
 
+The code and outputs are organized as follows:
 
-# Replication
+- Julia package: `CubasJuhnSilos/`.
+- Original replication files: `replication-package/`.
+- Generated tables: `output/tables/`.
+- Generated figures: `output/figures/`.
+- Notes on missing inputs: `output/logs/`.
 
-- Figure 1: Looks the same
-- Figure 2: no program provided
-- Figure 3: Paper version looks different from the one generated by programs:
+# Replication Results
 
-## Images
+## Figure 2
 
-you can include images in the `images/` folder, like the examples below. Notice that `.pdf` images don't work well for html output.
- 
-::: {#fig-three layout-ncol=2}
+Figure 2 is replicated using the Stata-exported data checkpoint `fig2_3.xlsx`. This file contains the average minutes worked in each hour bin by gender and family status. The Julia code reads the spreadsheet and plots the two panels.
 
-![Paper version](images/heman.png)
+![Replicated Figure 2: work by hour of day, gender and family status.](output/figures/figure2_replicated.png){#fig-figure2}
 
-![Replicated version](images/skeletor.png)
+The replicated figure displays the same substantive pattern as the original: full-time workers concentrate work during regular daytime hours, with a larger male-female difference among married workers with children than among single workers without children.
 
-Figure 3 [DELETE THIS FIGURE]
+## Table 5
 
-:::
+Table 5 is replicated by porting the simple two-occupation model from R to Julia. The table below reports the main outputs produced by the Julia implementation.
 
+| Panel A: No Gender Differences | Occupation 1 | Occupation 2 |
+|---|---:|---:|
+| Share of Workers | 0.479 | 0.521 |
+| Ratio 8to5 | 0.595 | 0.506 |
+| Earnings | 0.416 | 0.383 |
+| Raw labor by occupation | 0.823 | 0.803 |
+| Effective labor by occupation | 0.796 | 0.802 |
 
+| Panel B: Gender-Specific $\nu$ | Occupation 1 | Occupation 2 |
+|---|---:|---:|
+| Gender Gap | 1.031 | 1.031 |
+| Gender Gap, Occupation 2 | 1.005 | 1.005 |
+| Share of Workers | 0.437 | 0.563 |
+| Ratio 8to5 | 0.545 | 0.516 |
+| Earnings | 0.459 | 0.356 |
+| Raw labor by occupation | 0.910 | 0.730 |
+| Effective labor by occupation | 0.898 | 0.726 |
+| Share female | 0.000 | 0.888 |
+
+| Panel C: Gender-Specific $\nu$ and Tastes | Occupation 1 | Occupation 2 |
+|---|---:|---:|
+| Aggregate Gender Gap | 1.026 | 1.026 |
+| Gender Gap by Occupation | 1.047 | 1.005 |
+| Ratio 8to5 | 0.599 | 0.510 |
+| Share Female | 0.500 | 0.500 |
+| Percent Workers | 0.497 | 0.503 |
+| Earnings | 0.405 | 0.396 |
+| Raw Labor | 0.823 | 0.804 |
+| Effective Labor | 0.796 | 0.802 |
+
+The corresponding output files are:
+
+- `output/tables/table5_panel_a_no_gender.csv`
+- `output/tables/table5_panel_b_gender_diff_nu.csv`
+- `output/tables/table5_panel_c_tastes.csv`
+- `output/tables/table5_replicated.tex`
+
+## Counterfactual 5.3.2
+
+The quantitative counterfactual is implemented in Julia by solving the baseline model and then setting all occupation-specific coordination parameters $\alpha$ equal to the healthcare-support occupation's value. This corresponds to `experiment == 1` in the original R script `main_ge.R`.
+
+| Scenario | Aggregate gender gap (%) | Total log gap | Across log component | Within log component |
+|---|---:|---:|---:|---:|
+| Baseline | 9.626 | 0.092 | 0.019 | 0.073 |
+| Same $\alpha$ as healthcare support | 6.464 | 0.063 | 0.042 | 0.020 |
+
+The counterfactual substantially lowers the within-occupation component of the gender wage gap in the model, from 0.073 log points to 0.020 log points. This is consistent with the mechanism emphasized in the paper: coordination requirements amplify within-occupation gender wage differences.
+
+The corresponding output files are:
+
+- `output/tables/counterfactual_5_3_2_summary.csv`
+- `output/tables/counterfactual_5_3_2_baseline_regression.csv`
+- `output/tables/counterfactual_5_3_2_counter_regression.csv`
+
+One caveat is important. The downloaded package does not include the original `Quantitative_Analysis/data/*.txt` calibration moment files used by the R script. The Julia implementation therefore uses the estimated parameters in `model_files/ces_param` and parses the labor shares from `latex_tables/table8.tex`. This is sufficient to solve the baseline and counterfactual equilibria, but it does not recompute the full original model-fit statistic.
+
+## Tables 1, 2 and 6
+
+The original Stata scripts for Tables 1, 2 and 6 expect intermediate `.dta` files that are not present in the downloaded replication package. In particular, the missing files are:
+
+- `replication-package/Codes_CubasJuhnSilos/EJ_replicate/document_data_new/document_dta/5_data_#5.dta`
+- `replication-package/Codes_CubasJuhnSilos/EJ_replicate/document_data_new/document_dta/6_regression data/6_b_reg.dta`
+- `replication-package/Codes_CubasJuhnSilos/EJ_replicate/table6-7/ONET_563b.dta`
+- `replication-package/Codes_CubasJuhnSilos/EJ_replicate/table6-7/bratio_563all.dta`
+
+The Julia package contains a checkpoint route that will read these `.dta` files once they are produced and then replicate the final table regressions in Julia. The commands are:
+
+```julia
+CubasJuhnSilos.run_table1_table2(source = :dta)
+CubasJuhnSilos.run_table6(source = :dta)
+```
+
+A raw-data port is also scaffolded:
+
+```julia
+CubasJuhnSilos.run_table1_table2(source = :raw)
+CubasJuhnSilos.run_table6(source = :raw)
+```
+
+The raw route still requires translating the Stata data-construction chain that creates the missing intermediate files. In particular, Tables 1 and 2 require reproducing `5_data_#5.dta`, while Table 6 requires reproducing `6_b_reg.dta` and the occupation-level O*NET and bunching-ratio merge files.
+
+# Conclusion
+
+This replication currently reproduces the model-based exhibits and Figure 2 in Julia, and it provides the structure needed to finish the empirical tables once the Stata checkpoint datasets are available. The main remaining task is the data-construction part of the empirical replication: either generating the original intermediate `.dta` files and using the implemented Julia checkpoint route, or fully porting the Stata raw-data pipeline to Julia.

@@ -1,0 +1,283 @@
+
+  ___  ____  ____  ____  ____ ®
+ /__    /   ____/   /   ____/      17.0
+___/   /   /___/   /   /___/       BE—Basic Edition
+
+ Statistics and Data Science       Copyright 1985-2021 StataCorp LLC
+                                   StataCorp
+                                   4905 Lakeway Drive
+                                   College Station, Texas 77845 USA
+                                   800-STATA-PC        https://www.stata.com
+                                   979-696-4600        stata@stata.com
+
+Stata license: Unlimited-user , expiring  4 Aug 2023
+Serial number: 501709301055
+  Licensed to: Pedro Silos
+               Temple University
+
+Notes:
+      1. Stata is running in batch mode.
+      2. Unicode is supported; see help unicode_advice.
+
+. do "./atusact_raw_0314.do" 
+
+. 
+.         #delimit ;
+delimiter now ;
+.  * Edit the insheet statement to reference the data file on your computer.;
+. insheet
+> tucaseid
+> tuactivity_n
+> tuactdur24
+> tucc5
+> tucc5b
+> trtcctot_ln
+> trtcc_ln
+> trtcoc_ln
+> tustarttim
+> tustoptime
+> trcodep
+> trtier1p
+> trtier2p
+> tucc8
+> tucumdur
+> tucumdur24
+> tuactdur
+> tr_03cc57
+> trto_ln
+> trtonhh_ln
+> trtohh_ln
+> trthh_ln
+> trtnohh_ln
+> tewhere
+> tucc7
+> trwbelig
+> trtec_ln
+> tuec24
+> tudurstop
+> 
+> using "./atusact_0314.dat";
+(note: variable names in file ignored)
+(29 vars, 3,132,664 obs)
+
+. label variable tucaseid "ATUS Case ID (14-digit identifier)";
+
+. label variable tuactivity_n "Activity line number";
+
+. label variable tuactdur24 "Duration of activity in minutes (last activity tru
+> ncated at 4:00 a.m.)";
+
+. label variable tucc5 "Was at least one of your own household children < 13 in
+>  your care during this activity?";
+note: label truncated to 80 characters
+
+. label variable tucc5b "Was at least one of your non-own household children < 
+> 13 in your care during this activity?";
+note: label truncated to 80 characters
+
+. label variable trtcctot_ln "Total time spent during activity providing second
+> ary childcare for all children < 13 (in minutes)";
+note: label truncated to 80 characters
+
+. label variable trtcc_ln "Total time spent during activity providing secondary
+>  child care for household and own nonhousehold children < 13 (in minutes)";
+note: label truncated to 80 characters
+
+. label variable trtcoc_ln "Total time spent during activity providing secondar
+> y child care for nonown, nonhousehold children <13 (in minutes)";
+note: label truncated to 80 characters
+
+. label variable tustarttim "Activity start time";
+
+. label variable tustoptime "Activity stop time";
+
+. label variable trcodep "Pooled six-digit activity code";
+
+. label variable trtier1p "Pooled lexicon tier 1: 1st and 2nd digits of 6-digit
+>  activity code";
+
+. label variable trtier2p "Pooled lexicon tiers 1 and 2: 1st four digits of 6-d
+> igit activity code";
+
+. label variable tucc8 "Other than household or own non-household children < 13
+> , was there a child 0-12 in your care during this activity?";
+note: label truncated to 80 characters
+
+. label variable tucumdur "Cumulative duration of activity lengths in minutes; 
+> last activity not truncated at 4:00am or 1440 minutes (cumulative total of TU
+> ACTDUR for each TUCASEID)";
+note: label truncated to 80 characters
+
+. label variable tucumdur24 "Cumulative duration of activity lengths in minutes
+> ; last activity truncated at 4:00am or 1440 minutes (cumulative total of TUAC
+> TDUR24 for each TUCASEID)";
+note: label truncated to 80 characters
+
+. label variable tuactdur "Duration of activity in minutes (last activity not t
+> runcated at 4:00 a.m.)";
+
+. label variable tr_03cc57 "Was a household or own non-household child < 13 in 
+> your care during this activity?";
+note: label truncated to 80 characters
+
+. label variable trto_ln "Total time spent during activity providing secondary 
+> childcare for own children < 13 (in minutes)";
+note: label truncated to 80 characters
+
+. label variable trtonhh_ln "Total time spent during activity providing seconda
+> ry childcare for own nonhousehold children < 13 (in minutes)";
+note: label truncated to 80 characters
+
+. label variable trtohh_ln "Total time spent during activity providing secondar
+> y childcare for own household children < 13 (in minutes)";
+note: label truncated to 80 characters
+
+. label variable trthh_ln "Total time spent during activity providing secondary
+>  childcare for household children < 13 (in minutes)";
+note: label truncated to 80 characters
+
+. label variable trtnohh_ln "Total time spent during activity providing seconda
+> ry childcare for nonown household children < 13 (in minutes)";
+note: label truncated to 80 characters
+
+. label variable tewhere "Edited: where were you during the activity?";
+
+. label variable tucc7 "Was at least one of your own non-household children < 1
+> 3 in your care during this activity?";
+note: label truncated to 80 characters
+
+. label variable trwbelig "Flag identifying activities eligible for the Well-Be
+> ing Module";
+
+. label variable trtec_ln "Time (in minutes) spent providing eldercare by activ
+> ity";
+
+. label variable tuec24 "At which times or during which activities did you prov
+> ide that care or assistance yesterday?";
+note: label truncated to 80 characters
+
+. label variable tudurstop "Method for reporting activity duration";
+
+.  label define labeltewhere
+> -1 "Blank"
+> -2 "Don't Know"
+> -3 "Refused"
+> 1 "Respondent's home or yard"
+> 2 "Respondent's workplace"
+> 3 "Someone else's home"
+> 4 "Restaurant or bar"
+> 5 "Place of worship"
+> 6 "Grocery store"
+> 7 "Other store/mall"
+> 8 "School"
+> 9 "Outdoors away from home"
+> 10 "Library"
+> 11 "Other place"
+> 12 "Car, truck, or motorcycle (driver)"
+> 13 "Car, truck, or motorcycle (passenger)"
+> 14 "Walking"
+> 15 "Bus"
+> 16 "Subway/train"
+> 17 "Bicycle"
+> 18 "Boat/ferry"
+> 19 "Taxi/limousine service"
+> 20 "Airplane"
+> 21 "Other mode of transportation"
+> 30 "Bank"
+> 31 "Gym/health club"
+> 32 "Post Office"
+> 89 "Unspecified place"
+> 99 "Unspecified mode of transportation"
+> ;
+
+. label define labeltucc5
+> -1 "Blank"
+> -2 "Don't Know"
+> -3 "Refused"
+> 0 "No"
+> 1 "Yes"
+> 97 "No additional activities involved childcare"
+> ;
+
+. label define labeltucc5b
+> -1 "Blank"
+> -2 "Don't Know"
+> -3 "Refused"
+> 0 "No"
+> 1 "Yes"
+> 97 "No additional activities involved childcare"
+> ;
+
+. label define labeltucc7
+> -1 "Blank"
+> -2 "Don't Know"
+> -3 "Refused"
+> 0 "No"
+> 1 "Yes"
+> 97 "No additional activities involved childcare"
+> ;
+
+. label define labeltucc8
+> -1 "Blank"
+> -2 "Don't Know"
+> -3 "Refused"
+> 0 "No"
+> 1 "Yes"
+> 97 "No additional activities involved childcare"
+> ;
+
+. label define labeltr_03cc57
+> -1 "Blank"
+> -2 "Don't Know"
+> -3 "Refused"
+> 1 "At least one child < 13 was in respondent's care during activity"
+> ;
+
+. label define labeltrwbelig
+> -1 "Blank"
+> -2 "Don't Know"
+> -3 "Refused"
+> 0 "Activity not eligible for selection in the Well-Being Module"
+> 1 "Activity eligible for selection in the Well-Being Module"
+> ;
+
+. label define labeltuec24
+> -1 "Blank"
+> -2 "Don't Know"
+> -3 "Refused"
+> 1 "Activity identified as eldercare"
+> 96 "All day"
+> 97 "No more activities"
+> ;
+
+. label define labeltudurstop
+> -1 "Blank"
+> -2 "Don't Know"
+> -3 "Refused"
+> 1 "Activity duration was entered"
+> 2 "Activity stop time was entered"
+> ;
+
+. label values tewhere   labeltewhere;
+
+. label values tucc5     labeltucc5;
+
+. label values tucc5b    labeltucc5b;
+
+. label values tucc7     labeltucc7;
+
+. label values tucc8     labeltucc8;
+
+. label values tr_03cc57 labeltr_03cc57;
+
+. label values trwbelig  labeltrwbelig;
+
+. label values tuec24    labeltuec24;
+
+. label values tudurstop labeltudurstop;
+
+. save "../../Stata_Raw_Data/1_atusact_raw_0314.dta";
+file ../../Stata_Raw_Data/1_atusact_raw_0314.dta saved
+
+. 
+end of do-file

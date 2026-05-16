@@ -1,0 +1,58 @@
+{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}/home/pedro/Dropbox/Research_Projects/German_Temp/flex_women/Revision_Codes_CubasJuhnSilos_restrict/EJ_replicate/table4/table4_corr_vals.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}17 Oct 2022, 01:20:32
+{txt}
+{com}.  
+. pwcorr bratio_563 onet_ch_27 onet_ch_28 onet_ch_29 onet_ch_30 onet_ch_31 onet_ch_32 onet_ch_33 onet_ch_34 [aw=weight], star(.05)
+
+             {txt}{c |} brat~563 onet_~27 onet_~28 onet_~29 onet_~30 onet_~31 onet_~32
+{hline 13}{c +}{hline 63}
+  bratio_563 {c |} {res}  1.0000 
+  {txt}onet_ch_27 {c |} {res} -0.1908*  1.0000 
+  {txt}onet_ch_28 {c |} {res}  0.0471   0.3521*  1.0000 
+  {txt}onet_ch_29 {c |} {res}  0.0525   0.2122*  0.8485*  1.0000 
+  {txt}onet_ch_30 {c |} {res}  0.2948*  0.3764*  0.5248*  0.6056*  1.0000 
+  {txt}onet_ch_31 {c |} {res}  0.2336*  0.1983*  0.4252*  0.4870*  0.4750*  1.0000 
+  {txt}onet_ch_32 {c |} {res}  0.0471   0.6960*  0.5027*  0.3941*  0.5672*  0.3667*  1.0000 
+  {txt}onet_ch_33 {c |} {res} -0.0719   0.4004*  0.8679*  0.7015*  0.3814*  0.3332*  0.4424*
+  {txt}onet_ch_34 {c |} {res}  0.0501   0.1422*  0.8697*  0.8868*  0.4610*  0.4783*  0.3265*
+
+             {txt}{c |} onet_~33 onet_~34
+{hline 13}{c +}{hline 18}
+  onet_ch_33 {c |} {res}  1.0000 
+  {txt}onet_ch_34 {c |} {res}  0.7645*  1.0000 
+{txt}
+{com}. 
+. pwcorr bratio_563 cratio_563 male_overwork563 [aw=weight], star(.05)
+
+             {txt}{c |} brat~563 crat~563 male~563
+{hline 13}{c +}{hline 27}
+  bratio_563 {c |} {res}  1.0000 
+  {txt}cratio_563 {c |} {res}  0.7430*  1.0000 
+{txt}male_ove~563 {c |} {res}  0.1290* -0.0618   1.0000 
+{txt}
+{com}. 
+. pwcorr bratio_563 social abstract manual routine [aw=weight], star(.05)
+
+             {txt}{c |} brat~563   social abstract   manual  routine
+{hline 13}{c +}{hline 45}
+  bratio_563 {c |} {res}  1.0000 
+      {txt}social {c |} {res}  0.2129*  1.0000 
+    {txt}abstract {c |} {res}  0.3632*  0.6602*  1.0000 
+      {txt}manual {c |} {res} -0.4362* -0.6312* -0.5602*  1.0000 
+     {txt}routine {c |} {res} -0.3737* -0.6277* -0.5280*  0.6721*  1.0000 
+{txt}
+{com}. ** format into tex file as table 8b 
+.  
+. 
+. log close
+      {txt}name:  {res}<unnamed>
+       {txt}log:  {res}/home/pedro/Dropbox/Research_Projects/German_Temp/flex_women/Revision_Codes_CubasJuhnSilos_restrict/EJ_replicate/table4/table4_corr_vals.smcl
+  {txt}log type:  {res}smcl
+ {txt}closed on:  {res}17 Oct 2022, 01:20:32
+{txt}{.-}
+{smcl}
+{txt}{sf}{ul off}

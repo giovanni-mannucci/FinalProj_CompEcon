@@ -1,0 +1,94 @@
+
+  ___  ____  ____  ____  ____ ®
+ /__    /   ____/   /   ____/      17.0
+___/   /   /___/   /   /___/       BE—Basic Edition
+
+ Statistics and Data Science       Copyright 1985-2021 StataCorp LLC
+                                   StataCorp
+                                   4905 Lakeway Drive
+                                   College Station, Texas 77845 USA
+                                   800-STATA-PC        https://www.stata.com
+                                   979-696-4600        stata@stata.com
+
+Stata license: Unlimited-user , expiring  4 Aug 2023
+Serial number: 501709301055
+  Licensed to: Pedro Silos
+               Temple University
+
+Notes:
+      1. Stata is running in batch mode.
+      2. Unicode is supported; see help unicode_advice.
+
+. do "./atusrost_raw_0314.do" 
+
+. #delimit ;
+delimiter now ;
+.  * Edit the insheet statement to reference the data file on your computer.;
+.  insheet
+>  tucaseid
+>  tulineno
+>  terrp
+>  teage
+>  tesex
+>  using "./atusrost_0314.dat";
+(note: variable names in file ignored)
+(5 vars, 447,862 obs)
+
+.  label variable teage "Edited: age";
+
+. label variable tucaseid "ATUS Case ID (14-digit identifier)";
+
+. label variable tulineno "ATUS person line number";
+
+. label variable terrp "Edited: how is this person related to you?";
+
+. label variable tesex "Edited: sex";
+
+.  label define labelterrp
+> -1 "Blank"
+> -2 "Don't Know"
+> -3 "Refused"
+> 18 "Self"
+> 19 "Self"
+> 20 "Spouse"
+> 21 "Unmarried partner"
+> 22 "Own household child"
+> 23 "Grandchild"
+> 24 "Parent"
+> 25 "Brother/sister"
+> 26 "Other relative"
+> 27 "Foster child"
+> 28 "Housemate/roommate"
+> 29 "Roomer/boarder"
+> 30 "Other nonrelative"
+> 40 "Own non-household child < 18"
+> ;
+
+. label define labeltesex
+> -1 "Blank"
+> -2 "Don't Know"
+> -3 "Refused"
+> 1 "Male"
+> 2 "Female"
+> ;
+
+.  label values terrp   labelterrp;
+
+. label values tesex   labeltesex;
+
+. drop if tulineno != 1;
+(287,925 observations deleted)
+
+. describe, short;
+
+Contains data
+ Observations:       159,937                  
+    Variables:             5                  
+Sorted by: 
+     Note: Dataset has changed since last saved.
+
+. save "../../Stata_Raw_Data/atusrost_raw_0314.dta";
+file ../../Stata_Raw_Data/atusrost_raw_0314.dta saved
+
+. 
+end of do-file

@@ -1,0 +1,26 @@
+name = "CubasJuhnSilos"
+uuid = "3c6a4f0f-474c-4c3f-b66a-986dd179c44d"
+version = "0.1.0"
+authors = ["Gio"]
+
+[deps]
+CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
+CovarianceMatrices = "60f91f6f-d783-54cb-84f9-544141854719"
+DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+GLM = "38e38edf-8417-5370-95a0-9cbb8c7f171a"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+NLopt = "76087f3c-5699-56af-9a33-bf431cd00edd"
+NLsolve = "2774e3e8-f4cf-5e23-947b-6d7e65073b56"
+Optim = "429524aa-4258-5aef-a3af-852621145aeb"
+Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
+StatFiles = "1463e38c-9381-5320-bcd4-4134955f093a"
+Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
+StatsModels = "3eaba693-59b7-5ba5-a881-562e759f1c8d"
+XLSX = "fdbf4ff8-1666-58a4-91e7-1b58723a45e0"
+
+[compat]
+CovarianceMatrices = "0.30.5"
+GLM = "1.9.4"
+StatFiles = "0.8.0"
+StatsModels = "0.7.9"
+julia = "1.10"

@@ -1,0 +1,13 @@
+Raw Julia route for Tables 1 and 2.
+
+The Stata path constructs `5_data_#5.dta` via:
+1. raw ATUS fixed-width files -> Stata_Raw_Data/*.dta
+2. document_dta/2_1 through 2_4
+3. document_dta/3_br_cr/3a-3j
+4. document_dta/4_spouse.do
+5. document_dta/5_data_5.do
+
+The Julia final-table code is already implemented in
+`run_table1_table2_from_dta()`. The remaining raw-port work is to replace
+Stata's fixed-width import and merge chain with Julia code that produces
+the same columns as `5_data_#5.dta`.

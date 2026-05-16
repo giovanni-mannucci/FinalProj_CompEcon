@@ -1,0 +1,14 @@
+Table 6 not run yet.
+
+Original source file:
+    /Users/Gio/Desktop/CompEcon/FinalProj_CompEcon/replication-package/Codes_CubasJuhnSilos/EJ_replicate/table6-7/6.tab6.do
+
+The original code expects Stata `.dta` intermediate files, especially
+`5_data_#5.dta` for Tables 1-2 and `6_b_reg.dta` plus ONET/ratio files for
+Table 6. Those `.dta` files are not included in the current package.
+
+Next implementation step:
+1. Port the Stata data-construction scripts in
+   `EJ_replicate/document_data_new/document_dta/` to Julia, or
+2. If you can create/export the `.dta` files from Stata once, read them in
+   Julia and port only the final regressions.
