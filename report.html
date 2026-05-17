@@ -123,7 +123,12 @@ window.Quarto = {
   <li><a href="#figure-2" id="toc-figure-2" class="nav-link" data-scroll-target="#figure-2"><span class="header-section-number">1.1</span> Figure 2</a></li>
   <li><a href="#table-5" id="toc-table-5" class="nav-link" data-scroll-target="#table-5"><span class="header-section-number">1.2</span> Table 5</a></li>
   <li><a href="#counterfactual-5.3.2" id="toc-counterfactual-5.3.2" class="nav-link" data-scroll-target="#counterfactual-5.3.2"><span class="header-section-number">1.3</span> Counterfactual 5.3.2</a></li>
-  <li><a href="#tables-1-2-and-6" id="toc-tables-1-2-and-6" class="nav-link" data-scroll-target="#tables-1-2-and-6"><span class="header-section-number">1.4</span> Tables 1, 2 and 6</a></li>
+  <li><a href="#tables-1-and-2" id="toc-tables-1-and-2" class="nav-link" data-scroll-target="#tables-1-and-2"><span class="header-section-number">1.4</span> Tables 1 and 2</a>
+  <ul class="collapse">
+  <li><a href="#table-1-work-hours" id="toc-table-1-work-hours" class="nav-link" data-scroll-target="#table-1-work-hours"><span class="header-section-number">1.4.1</span> Table 1: Work Hours</a></li>
+  <li><a href="#table-2-household-care-hours" id="toc-table-2-household-care-hours" class="nav-link" data-scroll-target="#table-2-household-care-hours"><span class="header-section-number">1.4.2</span> Table 2: Household Care Hours</a></li>
+  </ul></li>
+  <li><a href="#table-6" id="toc-table-6" class="nav-link" data-scroll-target="#table-6"><span class="header-section-number">1.5</span> Table 6</a></li>
   </ul></li>
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">2</span> Conclusion</a></li>
   </ul>
@@ -193,7 +198,7 @@ window.Quarto = {
 <li>Table 5, the simple model results.</li>
 <li>Counterfactual 5.3.2, the quantitative-model counterfactual in which occupational coordination is set to the healthcare-support value.</li>
 </ol>
-<p>At the current stage, Figure 2, Table 5 and the quantitative counterfactual are implemented and run in Julia. The final Julia code for Tables 1, 2 and 6 from Stata <code>.dta</code> checkpoints is also implemented, but the required <code>.dta</code> intermediate files are not included in the downloaded replication package and still need to be generated.</p>
+<p>At the current stage, Figure 2, Tables 1 and 2, Table 5 and the quantitative counterfactual are implemented and run in Julia. Tables 1 and 2 use the generated Stata checkpoint <code>5_data_#5.dta</code>, with the final regression and summary-statistic calculations performed in Julia. The final Julia code for Table 6 from Stata <code>.dta</code> checkpoints is also implemented, but the remaining Table 6 intermediate files still need to be generated.</p>
 </section>
 <section id="high-level-description-of-computational-problem" class="level2" data-number="0.2">
 <h2 data-number="0.2" class="anchored" data-anchor-id="high-level-description-of-computational-problem"><span class="header-section-number">0.2</span> High Level Description of Computational Problem</h2>
@@ -467,27 +472,184 @@ Figure&nbsp;1: Replicated Figure 2: work by hour of day, gender and family statu
 </ul>
 <p>One caveat is important. The downloaded package does not include the original <code>Quantitative_Analysis/data/*.txt</code> calibration moment files used by the R script. The Julia implementation therefore uses the estimated parameters in <code>model_files/ces_param</code> and parses the labor shares from <code>latex_tables/table8.tex</code>. This is sufficient to solve the baseline and counterfactual equilibria, but it does not recompute the full original model-fit statistic.</p>
 </section>
-<section id="tables-1-2-and-6" class="level2" data-number="1.4">
-<h2 data-number="1.4" class="anchored" data-anchor-id="tables-1-2-and-6"><span class="header-section-number">1.4</span> Tables 1, 2 and 6</h2>
-<p>The original Stata scripts for Tables 1, 2 and 6 expect intermediate <code>.dta</code> files that are not present in the downloaded replication package. In particular, the missing files are:</p>
+<section id="tables-1-and-2" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="tables-1-and-2"><span class="header-section-number">1.4</span> Tables 1 and 2</h2>
+<p>Tables 1 and 2 are replicated using the generated Stata checkpoint <code>5_data_#5.dta</code>. The Julia code follows the final Stata table script: it drops nonrespondents, restricts the sample to full-time married workers with children between ages 18 and 65, aggregates time-use bins to the respondent-day level, and estimates weighted least-squares regressions with ATUS final weights.</p>
+<p>For speed, the Julia workflow first creates and uses a slim checkpoint, <code>5_data_#5_table12.dta</code>, containing only the variables needed for these two tables. This does not change the sample or calculations; it only avoids repeatedly loading hundreds of unused variables from the full two-gigabyte checkpoint file.</p>
+<section id="table-1-work-hours" class="level3" data-number="1.4.1">
+<h3 data-number="1.4.1" class="anchored" data-anchor-id="table-1-work-hours"><span class="header-section-number">1.4.1</span> Table 1: Work Hours</h3>
+<p>The coefficient reported is the female coefficient in regressions of total work hours. Negative values mean women report fewer work hours than comparable men in the selected sample.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: right;">Model</th>
+<th style="text-align: right;">Estimate</th>
+<th style="text-align: right;">Standard error</th>
+<th style="text-align: right;">Observations</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.898</td>
+<td style="text-align: right;">0.069</td>
+<td style="text-align: right;">12,113</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">-0.749</td>
+<td style="text-align: right;">0.067</td>
+<td style="text-align: right;">12,344</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">-0.901</td>
+<td style="text-align: right;">0.069</td>
+<td style="text-align: right;">12,113</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">-0.911</td>
+<td style="text-align: right;">0.070</td>
+<td style="text-align: right;">12,113</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">-0.703</td>
+<td style="text-align: right;">0.070</td>
+<td style="text-align: right;">12,113</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">-0.490</td>
+<td style="text-align: right;">0.077</td>
+<td style="text-align: right;">8,393</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="table-2-household-care-hours" class="level3" data-number="1.4.2">
+<h3 data-number="1.4.2" class="anchored" data-anchor-id="table-2-household-care-hours"><span class="header-section-number">1.4.2</span> Table 2: Household Care Hours</h3>
+<p>The coefficient reported is the female coefficient in regressions of total household-care hours. Positive values mean women report more household-care hours than comparable men in the selected sample.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: right;">Model</th>
+<th style="text-align: right;">Estimate</th>
+<th style="text-align: right;">Standard error</th>
+<th style="text-align: right;">Observations</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.436</td>
+<td style="text-align: right;">0.028</td>
+<td style="text-align: right;">12,113</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.264</td>
+<td style="text-align: right;">0.033</td>
+<td style="text-align: right;">12,344</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.436</td>
+<td style="text-align: right;">0.028</td>
+<td style="text-align: right;">12,113</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0.349</td>
+<td style="text-align: right;">0.027</td>
+<td style="text-align: right;">12,113</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0.319</td>
+<td style="text-align: right;">0.027</td>
+<td style="text-align: right;">12,113</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0.266</td>
+<td style="text-align: right;">0.033</td>
+<td style="text-align: right;">8,393</td>
+</tr>
+</tbody>
+</table>
+<p>The corresponding weighted means are:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Statistic</th>
+<th style="text-align: right;">Weighted mean</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Weekday male work</td>
+<td style="text-align: right;">7.904</td>
+</tr>
+<tr class="even">
+<td>Weekday female work</td>
+<td style="text-align: right;">7.006</td>
+</tr>
+<tr class="odd">
+<td>Weekend male work</td>
+<td style="text-align: right;">2.163</td>
+</tr>
+<tr class="even">
+<td>Weekend female work</td>
+<td style="text-align: right;">1.414</td>
+</tr>
+<tr class="odd">
+<td>Weekday male household care</td>
+<td style="text-align: right;">0.821</td>
+</tr>
+<tr class="even">
+<td>Weekday female household care</td>
+<td style="text-align: right;">1.257</td>
+</tr>
+<tr class="odd">
+<td>Weekend male household care</td>
+<td style="text-align: right;">1.002</td>
+</tr>
+<tr class="even">
+<td>Weekend female household care</td>
+<td style="text-align: right;">1.267</td>
+</tr>
+</tbody>
+</table>
+<p>The corresponding output files are:</p>
 <ul>
-<li><code>replication-package/Codes_CubasJuhnSilos/EJ_replicate/document_data_new/document_dta/5_data_#5.dta</code></li>
-<li><code>replication-package/Codes_CubasJuhnSilos/EJ_replicate/document_data_new/document_dta/6_regression data/6_b_reg.dta</code></li>
-<li><code>replication-package/Codes_CubasJuhnSilos/EJ_replicate/table6-7/ONET_563b.dta</code></li>
-<li><code>replication-package/Codes_CubasJuhnSilos/EJ_replicate/table6-7/bratio_563all.dta</code></li>
+<li><code>output/tables/table1_from_dta.csv</code></li>
+<li><code>output/tables/table2_from_dta.csv</code></li>
+<li><code>output/tables/tables1_2_weighted_means_from_dta.csv</code></li>
 </ul>
-<p>The Julia package contains a checkpoint route that will read these <code>.dta</code> files once they are produced and then replicate the final table regressions in Julia. The commands are:</p>
+</section>
+</section>
+<section id="table-6" class="level2" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="table-6"><span class="header-section-number">1.5</span> Table 6</h2>
+<p>The original Stata script for Table 6 expects additional intermediate <code>.dta</code> files. The Julia package contains a checkpoint route that will read these <code>.dta</code> files once they are produced and then replicate the final wage-regression table in Julia. The commands are:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>CubasJuhnSilos.<span class="fu">run_table1_table2</span>(source <span class="op">=</span> <span class="op">:</span>dta)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>CubasJuhnSilos.<span class="fu">run_table6</span>(source <span class="op">=</span> <span class="op">:</span>dta)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>A raw-data port is also scaffolded:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>CubasJuhnSilos.<span class="fu">run_table1_table2</span>(source <span class="op">=</span> <span class="op">:</span>raw)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>CubasJuhnSilos.<span class="fu">run_table6</span>(source <span class="op">=</span> <span class="op">:</span>raw)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The raw route still requires translating the Stata data-construction chain that creates the missing intermediate files. In particular, Tables 1 and 2 require reproducing <code>5_data_#5.dta</code>, while Table 6 requires reproducing <code>6_b_reg.dta</code> and the occupation-level O*NET and bunching-ratio merge files.</p>
+<p>The remaining Table 6 checkpoint files are:</p>
+<ul>
+<li><code>replication-package/Codes_CubasJuhnSilos/EJ_replicate/document_data_new/document_dta/6_regression data/6_b_reg.dta</code></li>
+<li><code>replication-package/Codes_CubasJuhnSilos/EJ_replicate/table6-7/ONET_563b.dta</code></li>
+<li><code>replication-package/Codes_CubasJuhnSilos/EJ_replicate/table6-7/bratio_563all.dta</code></li>
+</ul>
+<p>These files are generated by the Stata scripts in <code>document_data_new/document_dta/6_regression data/</code>, <code>table4/</code>, and <code>table6-7/</code>. Once they are available, <code>CubasJuhnSilos.run_table6(source = :dta)</code> will write <code>output/tables/table6_from_dta.csv</code>.</p>
 </section>
 </section>
 <section id="conclusion" class="level1" data-number="2">
 <h1 data-number="2"><span class="header-section-number">2</span> Conclusion</h1>
-<p>This replication currently reproduces the model-based exhibits and Figure 2 in Julia, and it provides the structure needed to finish the empirical tables once the Stata checkpoint datasets are available. The main remaining task is the data-construction part of the empirical replication: either generating the original intermediate <code>.dta</code> files and using the implemented Julia checkpoint route, or fully porting the Stata raw-data pipeline to Julia.</p>
+<p>This replication currently reproduces Figure 2, Tables 1 and 2, the model-based Table 5, and the quantitative counterfactual in Julia. The main remaining task is Table 6: generating the remaining Stata checkpoint datasets and then running the implemented Julia checkpoint route for the final wage regressions.</p>
 </section>
 
 </main>

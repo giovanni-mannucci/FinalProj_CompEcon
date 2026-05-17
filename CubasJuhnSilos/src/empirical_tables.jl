@@ -1,6 +1,8 @@
 function source_file_table12(root)
-    return joinpath(replication_root(root), "EJ_replicate", "document_data_new",
-                    "document_dta", "5_data_#5.dta")
+    base = joinpath(replication_root(root), "EJ_replicate", "document_data_new",
+                    "document_dta")
+    slim = joinpath(base, "5_data_#5_table12.dta")
+    return isfile(slim) ? slim : joinpath(base, "5_data_#5.dta")
 end
 
 function source_files_table6(root)

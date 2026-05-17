@@ -38,6 +38,28 @@ keep if hours==24
 * create unique household identifier*
 egen id=group(tucaseid)
 
+
+// * added on 16.06.26 ---------------------------------------------------
+// * Debug sample: keep a random 30% of respondents/diaries
+// set seed 12345
+//
+// bysort tucaseid: gen sample_draw = runiform() if _n==1
+// bysort tucaseid: replace sample_draw = sample_draw[1]
+//
+// keep if sample_draw < 0.30
+// drop sample_draw
+//
+// * Rebuild sequential id after sampling
+// drop id
+// egen id = group(tucaseid)
+//
+// summ id
+// local maxid = r(max)
+//
+// display "Sampled respondents: `maxid'"
+// * ------------------------------------------------------------
+
+
 replace starttim=tc(00:00:00) if original==0
 replace stoptim=tc(00:00:00) if original==0
 
@@ -58,7 +80,7 @@ preserve
 
 
 
- forval j =  1/134772{
+ forval j =  1/134772 { // instead of `maxid'
  * forval j = 1/30{
 keep if id==`j' 
  scalar N=_N
@@ -222,7 +244,7 @@ clear
  
 * once all the files are created, open id 1 and append using loop from 2 onwards.
 use "id1.dta"
-forval num= 2/134772{
+forval num= 2/134772 { // instead of `maxid'
 * forval num = 2/30{
 append using "id`num'.dta"
 }

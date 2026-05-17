@@ -38,7 +38,7 @@ The replication targets are:
 3. Table 5, the simple model results.
 4. Counterfactual 5.3.2, the quantitative-model counterfactual in which occupational coordination is set to the healthcare-support value.
 
-At the current stage, Figure 2, Table 5 and the quantitative counterfactual are implemented and run in Julia. The final Julia code for Tables 1, 2 and 6 from Stata `.dta` checkpoints is also implemented, but the required `.dta` intermediate files are not included in the downloaded replication package and still need to be generated.
+At the current stage, Figure 2, Tables 1 and 2, Table 5 and the quantitative counterfactual are implemented and run in Julia. Tables 1 and 2 use the generated Stata checkpoint `5_data_#5.dta`, with the final regression and summary-statistic calculations performed in Julia. The final Julia code for Table 6 from Stata `.dta` checkpoints is also implemented, but the remaining Table 6 intermediate files still need to be generated.
 
 ## High Level Description of Computational Problem
 
@@ -178,16 +178,60 @@ The corresponding output files are:
 
 One caveat is important. The downloaded package does not include the original `Quantitative_Analysis/data/*.txt` calibration moment files used by the R script. The Julia implementation therefore uses the estimated parameters in `model_files/ces_param` and parses the labor shares from `latex_tables/table8.tex`. This is sufficient to solve the baseline and counterfactual equilibria, but it does not recompute the full original model-fit statistic.
 
-## Tables 1, 2 and 6
+## Tables 1 and 2
 
-The original Stata scripts for Tables 1, 2 and 6 expect intermediate `.dta` files that are not present in the downloaded replication package. In particular, the missing files are:
+Tables 1 and 2 are replicated using the generated Stata checkpoint `5_data_#5.dta`. The Julia code follows the final Stata table script: it drops nonrespondents, restricts the sample to full-time married workers with children between ages 18 and 65, aggregates time-use bins to the respondent-day level, and estimates weighted least-squares regressions with ATUS final weights.
 
-- `replication-package/Codes_CubasJuhnSilos/EJ_replicate/document_data_new/document_dta/5_data_#5.dta`
-- `replication-package/Codes_CubasJuhnSilos/EJ_replicate/document_data_new/document_dta/6_regression data/6_b_reg.dta`
-- `replication-package/Codes_CubasJuhnSilos/EJ_replicate/table6-7/ONET_563b.dta`
-- `replication-package/Codes_CubasJuhnSilos/EJ_replicate/table6-7/bratio_563all.dta`
+For speed, the Julia workflow first creates and uses a slim checkpoint, `5_data_#5_table12.dta`, containing only the variables needed for these two tables. This does not change the sample or calculations; it only avoids repeatedly loading hundreds of unused variables from the full two-gigabyte checkpoint file.
 
-The Julia package contains a checkpoint route that will read these `.dta` files once they are produced and then replicate the final table regressions in Julia. The commands are:
+### Table 1: Work Hours
+
+The coefficient reported is the female coefficient in regressions of total work hours. Negative values mean women report fewer work hours than comparable men in the selected sample.
+
+| Model | Estimate | Standard error | Observations |
+|---:|---:|---:|---:|
+| 1 | -0.898 | 0.069 | 12,113 |
+| 2 | -0.749 | 0.067 | 12,344 |
+| 3 | -0.901 | 0.069 | 12,113 |
+| 4 | -0.911 | 0.070 | 12,113 |
+| 5 | -0.703 | 0.070 | 12,113 |
+| 6 | -0.490 | 0.077 | 8,393 |
+
+### Table 2: Household Care Hours
+
+The coefficient reported is the female coefficient in regressions of total household-care hours. Positive values mean women report more household-care hours than comparable men in the selected sample.
+
+| Model | Estimate | Standard error | Observations |
+|---:|---:|---:|---:|
+| 1 | 0.436 | 0.028 | 12,113 |
+| 2 | 0.264 | 0.033 | 12,344 |
+| 3 | 0.436 | 0.028 | 12,113 |
+| 4 | 0.349 | 0.027 | 12,113 |
+| 5 | 0.319 | 0.027 | 12,113 |
+| 6 | 0.266 | 0.033 | 8,393 |
+
+The corresponding weighted means are:
+
+| Statistic | Weighted mean |
+|---|---:|
+| Weekday male work | 7.904 |
+| Weekday female work | 7.006 |
+| Weekend male work | 2.163 |
+| Weekend female work | 1.414 |
+| Weekday male household care | 0.821 |
+| Weekday female household care | 1.257 |
+| Weekend male household care | 1.002 |
+| Weekend female household care | 1.267 |
+
+The corresponding output files are:
+
+- `output/tables/table1_from_dta.csv`
+- `output/tables/table2_from_dta.csv`
+- `output/tables/tables1_2_weighted_means_from_dta.csv`
+
+## Table 6
+
+The original Stata script for Table 6 expects additional intermediate `.dta` files. The Julia package contains a checkpoint route that will read these `.dta` files once they are produced and then replicate the final wage-regression table in Julia. The commands are:
 
 ```julia
 CubasJuhnSilos.run_table1_table2(source = :dta)
@@ -201,8 +245,14 @@ CubasJuhnSilos.run_table1_table2(source = :raw)
 CubasJuhnSilos.run_table6(source = :raw)
 ```
 
-The raw route still requires translating the Stata data-construction chain that creates the missing intermediate files. In particular, Tables 1 and 2 require reproducing `5_data_#5.dta`, while Table 6 requires reproducing `6_b_reg.dta` and the occupation-level O*NET and bunching-ratio merge files.
+The remaining Table 6 checkpoint files are:
+
+- `replication-package/Codes_CubasJuhnSilos/EJ_replicate/document_data_new/document_dta/6_regression data/6_b_reg.dta`
+- `replication-package/Codes_CubasJuhnSilos/EJ_replicate/table6-7/ONET_563b.dta`
+- `replication-package/Codes_CubasJuhnSilos/EJ_replicate/table6-7/bratio_563all.dta`
+
+These files are generated by the Stata scripts in `document_data_new/document_dta/6_regression data/`, `table4/`, and `table6-7/`. Once they are available, `CubasJuhnSilos.run_table6(source = :dta)` will write `output/tables/table6_from_dta.csv`.
 
 # Conclusion
 
-This replication currently reproduces the model-based exhibits and Figure 2 in Julia, and it provides the structure needed to finish the empirical tables once the Stata checkpoint datasets are available. The main remaining task is the data-construction part of the empirical replication: either generating the original intermediate `.dta` files and using the implemented Julia checkpoint route, or fully porting the Stata raw-data pipeline to Julia.
+This replication currently reproduces Figure 2, Tables 1 and 2, the model-based Table 5, and the quantitative counterfactual in Julia. The main remaining task is Table 6: generating the remaining Stata checkpoint datasets and then running the implemented Julia checkpoint route for the final wage regressions.
