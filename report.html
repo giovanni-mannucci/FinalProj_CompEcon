@@ -198,7 +198,7 @@ window.Quarto = {
 <li>Table 5, the simple model results.</li>
 <li>Counterfactual 5.3.2, the quantitative-model counterfactual in which occupational coordination is set to the healthcare-support value.</li>
 </ol>
-<p>At the current stage, Figure 2, Tables 1 and 2, Table 5 and the quantitative counterfactual are implemented and run in Julia. Tables 1 and 2 use the generated Stata checkpoint <code>5_data_#5.dta</code>, with the final regression and summary-statistic calculations performed in Julia. The final Julia code for Table 6 from Stata <code>.dta</code> checkpoints is also implemented, but the remaining Table 6 intermediate files still need to be generated.</p>
+<p>At the current stage, Figure 2, Tables 1 and 2, Table 6, Table 5 and the quantitative counterfactual are implemented and run in Julia. Tables 1 and 2 use the generated Stata checkpoint <code>5_data_#5.dta</code>, with the final regression and summary-statistic calculations performed in Julia. Table 6 uses the generated CPS/O*NET occupation checkpoint files, with the final weighted regressions and clustered standard errors computed in Julia.</p>
 </section>
 <section id="high-level-description-of-computational-problem" class="level2" data-number="0.2">
 <h2 data-number="0.2" class="anchored" data-anchor-id="high-level-description-of-computational-problem"><span class="header-section-number">0.2</span> High Level Description of Computational Problem</h2>
@@ -632,24 +632,143 @@ Figure&nbsp;1: Replicated Figure 2: work by hour of day, gender and family statu
 </section>
 <section id="table-6" class="level2" data-number="1.5">
 <h2 data-number="1.5" class="anchored" data-anchor-id="table-6"><span class="header-section-number">1.5</span> Table 6</h2>
-<p>The original Stata script for Table 6 expects additional intermediate <code>.dta</code> files. The Julia package contains a checkpoint route that will read these <code>.dta</code> files once they are produced and then replicate the final wage-regression table in Julia. The commands are:</p>
+<p>Table 6 is replicated using the generated Stata checkpoint files <code>6_b_reg.dta</code>, <code>ONET_563b.dta</code>, and <code>bratio_563all.dta</code>. The Julia code merges the CPS regression data with O*NET measures and the occupation-level <code>8-to-5</code> ratio, then estimates weighted log-weekly-earnings regressions with education, race, year, age-polynomial and log-hours controls. Standard errors are clustered by detailed occupation.</p>
+<p>For speed, the Julia workflow uses a slim checkpoint, <code>6_b_reg_table6.dta</code>, containing only the variables required for the final Table 6 regressions.</p>
+<p>The key coefficient is <code>femaleXbratio_563</code>, the interaction between the female indicator and the occupation-level <code>8-to-5</code> work ratio.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 17%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Sample</th>
+<th style="text-align: right;">Model</th>
+<th style="text-align: right;">Female</th>
+<th style="text-align: right;">Female x ratio8to5</th>
+<th style="text-align: right;">Ratio8to5</th>
+<th style="text-align: right;">Observations</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>All</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.218</td>
+<td style="text-align: right;">-0.049</td>
+<td style="text-align: right;">0.113</td>
+<td style="text-align: right;">263,245</td>
+</tr>
+<tr class="even">
+<td>All</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">-0.254</td>
+<td style="text-align: right;">-0.046</td>
+<td style="text-align: right;">0.064</td>
+<td style="text-align: right;">263,245</td>
+</tr>
+<tr class="odd">
+<td>All</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">-0.244</td>
+<td style="text-align: right;">-0.044</td>
+<td style="text-align: right;">0.063</td>
+<td style="text-align: right;">263,179</td>
+</tr>
+<tr class="even">
+<td>All</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">-0.212</td>
+<td style="text-align: right;">-0.028</td>
+<td style="text-align: right;">0.069</td>
+<td style="text-align: right;">256,672</td>
+</tr>
+<tr class="odd">
+<td>Single, no children</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.135</td>
+<td style="text-align: right;">-0.022</td>
+<td style="text-align: right;">0.102</td>
+<td style="text-align: right;">73,536</td>
+</tr>
+<tr class="even">
+<td>Single, no children</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">-0.169</td>
+<td style="text-align: right;">-0.025</td>
+<td style="text-align: right;">0.062</td>
+<td style="text-align: right;">73,536</td>
+</tr>
+<tr class="odd">
+<td>Single, no children</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">-0.165</td>
+<td style="text-align: right;">-0.024</td>
+<td style="text-align: right;">0.061</td>
+<td style="text-align: right;">73,516</td>
+</tr>
+<tr class="even">
+<td>Single, no children</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">-0.132</td>
+<td style="text-align: right;">-0.010</td>
+<td style="text-align: right;">0.062</td>
+<td style="text-align: right;">71,577</td>
+</tr>
+<tr class="odd">
+<td>Married with children</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.263</td>
+<td style="text-align: right;">-0.063</td>
+<td style="text-align: right;">0.109</td>
+<td style="text-align: right;">110,230</td>
+</tr>
+<tr class="even">
+<td>Married with children</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">-0.298</td>
+<td style="text-align: right;">-0.060</td>
+<td style="text-align: right;">0.065</td>
+<td style="text-align: right;">110,230</td>
+</tr>
+<tr class="odd">
+<td>Married with children</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">-0.286</td>
+<td style="text-align: right;">-0.058</td>
+<td style="text-align: right;">0.065</td>
+<td style="text-align: right;">110,206</td>
+</tr>
+<tr class="even">
+<td>Married with children</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">-0.255</td>
+<td style="text-align: right;">-0.040</td>
+<td style="text-align: right;">0.072</td>
+<td style="text-align: right;">107,626</td>
+</tr>
+</tbody>
+</table>
+<p>The corresponding output file is:</p>
+<ul>
+<li><code>output/tables/table6_from_dta.csv</code></li>
+</ul>
+<p>The commands for the empirical checkpoint route are:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>CubasJuhnSilos.<span class="fu">run_table1_table2</span>(source <span class="op">=</span> <span class="op">:</span>dta)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>CubasJuhnSilos.<span class="fu">run_table6</span>(source <span class="op">=</span> <span class="op">:</span>dta)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>A raw-data port is also scaffolded:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>CubasJuhnSilos.<span class="fu">run_table1_table2</span>(source <span class="op">=</span> <span class="op">:</span>raw)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>CubasJuhnSilos.<span class="fu">run_table6</span>(source <span class="op">=</span> <span class="op">:</span>raw)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The remaining Table 6 checkpoint files are:</p>
-<ul>
-<li><code>replication-package/Codes_CubasJuhnSilos/EJ_replicate/document_data_new/document_dta/6_regression data/6_b_reg.dta</code></li>
-<li><code>replication-package/Codes_CubasJuhnSilos/EJ_replicate/table6-7/ONET_563b.dta</code></li>
-<li><code>replication-package/Codes_CubasJuhnSilos/EJ_replicate/table6-7/bratio_563all.dta</code></li>
-</ul>
-<p>These files are generated by the Stata scripts in <code>document_data_new/document_dta/6_regression data/</code>, <code>table4/</code>, and <code>table6-7/</code>. Once they are available, <code>CubasJuhnSilos.run_table6(source = :dta)</code> will write <code>output/tables/table6_from_dta.csv</code>.</p>
+<p>The raw route still requires translating the full Stata data-construction chain. The checkpoint route is complete once the Stata intermediate files have been generated.</p>
 </section>
 </section>
 <section id="conclusion" class="level1" data-number="2">
 <h1 data-number="2"><span class="header-section-number">2</span> Conclusion</h1>
-<p>This replication currently reproduces Figure 2, Tables 1 and 2, the model-based Table 5, and the quantitative counterfactual in Julia. The main remaining task is Table 6: generating the remaining Stata checkpoint datasets and then running the implemented Julia checkpoint route for the final wage regressions.</p>
+<p>This replication currently reproduces Figure 2, Tables 1 and 2, Table 6, the model-based Table 5, and the quantitative counterfactual in Julia. The remaining limitation is that the empirical tables rely on Stata-generated checkpoint datasets rather than a full Julia port of the raw ATUS/CPS/O*NET data-construction pipeline.</p>
 </section>
 
 </main>

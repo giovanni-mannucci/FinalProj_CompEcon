@@ -48,12 +48,13 @@ Currently implemented in Julia:
 - Figure 2, using the original Stata-exported `fig2_3.xlsx` checkpoint.
 - Counterfactual 5.3.2, the quantitative model experiment setting all
   occupational coordination parameters to the healthcare-support value.
-- Final-regression/table code for Tables 1, 2, and 6 from Stata `.dta`
-  checkpoints, ready to run once those checkpoints are produced.
+- Tables 1, 2, and 6 from generated Stata `.dta` checkpoints, with the final
+  regressions and summary tables computed in Julia.
 
 Tables 1, 2, and 6 require Stata intermediate `.dta` files that are not present
-in the downloaded replication package. The Julia package writes notes in
-`output/logs/` describing the exact missing inputs and source scripts.
+in the downloaded replication package. After those checkpoints are produced,
+the Julia package reads them and writes the replicated tables to
+`output/tables/`.
 
 Run the `.dta` checkpoint route with:
 
@@ -62,13 +63,13 @@ CubasJuhnSilos.run_table1_table2(source = :dta)
 CubasJuhnSilos.run_table6(source = :dta)
 ```
 
-For Tables 1 and 2, place this file at the original package path:
+For Tables 1 and 2, the generated checkpoint is:
 
 ```text
 replication-package/Codes_CubasJuhnSilos/EJ_replicate/document_data_new/document_dta/5_data_#5.dta
 ```
 
-For Table 6, place these files at the original package paths:
+For Table 6, the generated checkpoints are:
 
 ```text
 replication-package/Codes_CubasJuhnSilos/EJ_replicate/document_data_new/document_dta/6_regression data/6_b_reg.dta

@@ -7,9 +7,11 @@ end
 
 function source_files_table6(root)
     base = replication_root(root)
+    reg_base = joinpath(base, "EJ_replicate", "document_data_new", "document_dta",
+                        "6_regression data")
+    slim_reg = joinpath(reg_base, "6_b_reg_table6.dta")
     return (
-        reg = joinpath(base, "EJ_replicate", "document_data_new", "document_dta",
-                       "6_regression data", "6_b_reg.dta"),
+        reg = isfile(slim_reg) ? slim_reg : joinpath(reg_base, "6_b_reg.dta"),
         onet = joinpath(base, "EJ_replicate", "table6-7", "ONET_563b.dta"),
         bratio = joinpath(base, "EJ_replicate", "table6-7", "bratio_563all.dta"),
     )
@@ -153,7 +155,7 @@ function standardize_skipmissing(x)
 end
 
 function leftjoin_if_present(left::DataFrame, right::DataFrame, on::Symbol)
-    return leftjoin(left, right, on = on, makeunique = true)
+    return leftjoin(left, right, on = on, makeunique = true, matchmissing = :notequal)
 end
 
 function prepare_table6_data(regdf::DataFrame, onetdf::DataFrame, bratiodf::DataFrame)
@@ -166,15 +168,18 @@ function prepare_table6_data(regdf::DataFrame, onetdf::DataFrame, bratiodf::Data
         end
     end
 
-    d = d[(d.prtage .>= 18) .& (d.prtage .<= 65) .&
-          (d.prhrusl .>= 3) .& (d.prhrusl .<= 6) .& (d.prernwa .> 0), :]
+    sample = coalesce.((d.prtage .>= 18) .& (d.prtage .<= 65) .&
+                       (d.prhrusl .>= 3) .& (d.prhrusl .<= 6) .&
+                       (d.prernwa .> 0), false)
+    d = d[sample, :]
     d.lprernwa = log.(Float64.(d.prernwa))
     d.lpehrusl1 = log.(Float64.(d.pehrusl1))
     d.prtage2 = Float64.(d.prtage) .^ 2
     d.prtage3 = Float64.(d.prtage) .^ 3
     d.prtage4 = Float64.(d.prtage) .^ 4
-    d.female = Float64.(d.pesex .== 2)
-    d.femaleXbratio_563 = d.female .* Float64.(d.bratio_563)
+    d.female = [ismissing(v) ? missing : Float64(v == 2) for v in d.pesex]
+    d.femaleXbratio_563 = [ismissing(f) || ismissing(b) ? missing : Float64(f) * Float64(b)
+                           for (f, b) in zip(d.female, d.bratio_563)]
     return d
 end
 
@@ -182,9 +187,11 @@ function table6_sample(df::DataFrame, sample::Symbol)
     if sample == :all
         return df
     elseif sample == :single_no_children
-        return df[(df.pemaritl .!= 1) .& (df.pemaritl .!= 2) .& (df.prnmchld .< 1), :]
+        keep = coalesce.((df.pemaritl .!= 1) .& (df.pemaritl .!= 2) .& (df.prnmchld .< 1), false)
+        return df[keep, :]
     elseif sample == :married_with_children
-        return df[((df.pemaritl .== 1) .| (df.pemaritl .== 2)) .& (df.prnmchld .> 0), :]
+        keep = coalesce.(((df.pemaritl .== 1) .| (df.pemaritl .== 2)) .& (df.prnmchld .> 0), false)
+        return df[keep, :]
     else
         error("Unknown sample: $sample")
     end

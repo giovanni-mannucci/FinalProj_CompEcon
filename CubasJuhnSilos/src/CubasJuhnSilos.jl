@@ -28,10 +28,9 @@ export run_all, run_table5, run_figure2, run_table1_table2, run_table6,
 
 Run every Julia replication component that is currently implemented.
 
-At this stage the fully implemented component is Table 5, which ports the
-paper's small two-occupation model from R to Julia. Figure 2 and the empirical
-tables are wired in as guided next steps because the original Stata
-intermediate `.dta` files are not present in the replication package.
+This runs Figure 2, Tables 1 and 2, Table 6, Table 5, and the quantitative
+counterfactual. The empirical tables use generated Stata checkpoint files for
+the heavy raw-data construction steps, then compute the final tables in Julia.
 """
 function run_all(; root::AbstractString = project_root())
     mkpath(joinpath(root, "output", "tables"))

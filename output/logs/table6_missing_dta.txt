@@ -1,8 +1,7 @@
-table6 cannot be produced from the `.dta` route yet.
+table6 can now be produced from the `.dta` route.
 
-Missing input files:
-/Users/Gio/Desktop/CompEcon/FinalProj_CompEcon/replication-package/Codes_CubasJuhnSilos/EJ_replicate/document_data_new/document_dta/6_regression data/6_b_reg.dta
-    /Users/Gio/Desktop/CompEcon/FinalProj_CompEcon/replication-package/Codes_CubasJuhnSilos/EJ_replicate/table6-7/ONET_563b.dta
-    /Users/Gio/Desktop/CompEcon/FinalProj_CompEcon/replication-package/Codes_CubasJuhnSilos/EJ_replicate/table6-7/bratio_563all.dta
+The previously missing input file has been generated:
+/Users/Gio/Desktop/CompEcon/FinalProj_CompEcon/replication-package/Codes_CubasJuhnSilos/EJ_replicate/table6-7/ONET_563b.dta
 
-After you produce these files from Stata, rerun the Julia command.
+The replicated Table 6 output is:
+/Users/Gio/Desktop/CompEcon/FinalProj_CompEcon/output/tables/table6_from_dta.csv
