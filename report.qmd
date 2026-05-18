@@ -4,7 +4,7 @@ subtitle: "Replication of Coordinated Work Schedules and the Gender Wage Gap, by
 author:
   - name: Giovanni Mannucci
     orcid: 0009-0000-0087-2843
-    email: giovanni.mannucci@carloalberto.com
+    email: giovanni.mannucci@carloalberto.org
     affiliations: Uni Turin, Collegio Carlo Alberto
 format:
   html:
