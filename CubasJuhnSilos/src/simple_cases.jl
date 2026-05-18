@@ -246,8 +246,11 @@ function final_model_data_tastes(taste_param, wagevec)
     gender_gap_occ = hourly_male ./ hourly_female
     aggregate_gender_gap = sum(massvec .* gender_gap_occ)
     earn_occ = sf .* earn_female .+ (1 .- sf) .* earn_male
-    raw_occ = sf .* [c.raw_labor for c in choices.female] .+
-              (1 .- sf) .* [c.raw_labor for c in choices.male]
+    # Match the original R output, which reports raw labor using gender-wide
+    # average hours rather than occupation-specific hours in this panel.
+    raw_female_mean = mean([c.raw_labor for c in choices.female])
+    raw_male_mean = mean([c.raw_labor for c in choices.male])
+    raw_occ = sf .* raw_female_mean .+ (1 .- sf) .* raw_male_mean
     eff_occ = sf .* [c.effective_labor for c in choices.female] .+
               (1 .- sf) .* [c.effective_labor for c in choices.male]
 

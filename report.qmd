@@ -3,7 +3,7 @@ title: "CCA `CompEcon` Replication Project"
 subtitle: "Replication of Coordinated Work Schedules and the Gender Wage Gap, by G. Cubas, C. Juhn and P. Silos (EJ, 2023)"
 author:
   - name: Giovanni Mannucci
-    orcid: 0000-0000-0000-0000
+    orcid: 0009-0000-0087-2843
     email: giovanni.mannucci@carloalberto.com
     affiliations: Uni Turin, Collegio Carlo Alberto
 format:
@@ -149,7 +149,7 @@ Table 5 is replicated by porting the simple two-occupation model from R to Julia
 | Share Female | 0.500 | 0.500 |
 | Percent Workers | 0.497 | 0.503 |
 | Earnings | 0.405 | 0.396 |
-| Raw Labor | 0.823 | 0.804 |
+| Raw Labor | 0.814 | 0.814 |
 | Effective Labor | 0.796 | 0.802 |
 
 The corresponding output files are:

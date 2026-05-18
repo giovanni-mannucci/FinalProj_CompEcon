@@ -166,6 +166,11 @@ TEMPLATE_files/
 
 **/*.quarto_ipynb
 
+# Local private notes, not part of the submitted repo/site
+PRIVATE_JULIA_CODE_EXPLANATION.md
+PRIVATE_JULIA_CODE_EXPLANATION.html
+PRIVATE_JULIA_CODE_EXPLANATION_files/
+
 # Project-specific overrides for this replication
 # Keep the Julia package and generated outputs under version control.
 !CubasJuhnSilos/
