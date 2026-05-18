@@ -114,7 +114,7 @@ The code and outputs are organized as follows:
 
 Figure 2 is replicated using the Stata-exported data checkpoint `fig2_3.xlsx`. This file contains the average minutes worked in each hour bin by gender and family status. The Julia code reads the spreadsheet and plots the two panels.
 
-![Replicated Figure 2: work by hour of day, gender and family status.](output/figures/figure2_replicated.png){#fig-figure2}
+![Replicated Figure 2: work by hour of day, gender and family status.](images/figure2_replicated.png){#fig-figure2}
 
 The replicated figure displays the same substantive pattern as the original: full-time workers concentrate work during regular daytime hours, with a larger male-female difference among married workers with children than among single workers without children.
 
