@@ -109,3 +109,7 @@ The report source is `report.qmd`. To render it, install Quarto from
 ```bash
 quarto render report.qmd
 ```
+
+The rendered report is also available online at:
+
+<https://giovanni-mannucci.github.io/FinalProj_CompEcon/>
