@@ -1,6 +1,6 @@
 # Cubas, Juhn, and Silos Replication
 
-This repository contains a Julia replication project for selected exhibits from
+This repository contains a Julia replication project for selected parts from
 Cubas, Juhn, and Silos, "Coordinated Work Schedules and the Gender Wage Gap".
 
 The original replication package is stored in `replication-package/`.
@@ -27,7 +27,7 @@ julia --project=CubasJuhnSilos -e 'using Pkg; Pkg.test()'
 
 ## Replication Output
 
-The package exposes a single entry point:
+The package has a single entry point:
 
 ```julia
 using Pkg
@@ -45,31 +45,31 @@ Implemented outputs are written to:
 Currently implemented in Julia:
 
 - Table 5, the simple two-occupation model.
-- Figure 2, using the original Stata-exported `fig2_3.xlsx` checkpoint.
+- Figure 2, using the original Stata-exported `fig2_3.xlsx`.
 - Counterfactual 5.3.2, the quantitative model experiment setting all
   occupational coordination parameters to the healthcare-support value.
-- Tables 1, 2, and 6 from generated Stata `.dta` checkpoints, with the final
+- Tables 1, 2, and 6 from generated Stata `.dta` files, with the final
   regressions and summary tables computed in Julia.
 
 Tables 1, 2, and 6 require Stata intermediate `.dta` files that are not present
-in the downloaded replication package. After those checkpoints are produced,
+in the downloaded replication package. After those intermediate files are produced,
 the Julia package reads them and writes the replicated tables to
 `output/tables/`.
 
-Run the `.dta` checkpoint route with:
+Run the `.dta` intermediate file route with:
 
 ```julia
 CubasJuhnSilos.run_table1_table2(source = :dta)
 CubasJuhnSilos.run_table6(source = :dta)
 ```
 
-For Tables 1 and 2, the generated checkpoint is:
+For Tables 1 and 2, the generated file is:
 
 ```text
 replication-package/Codes_CubasJuhnSilos/EJ_replicate/document_data_new/document_dta/5_data_#5.dta
 ```
 
-For Table 6, the generated checkpoints are:
+For Table 6, the generated files are:
 
 ```text
 replication-package/Codes_CubasJuhnSilos/EJ_replicate/document_data_new/document_dta/6_regression data/6_b_reg.dta
